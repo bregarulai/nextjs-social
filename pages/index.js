@@ -2,6 +2,7 @@ import { getSession, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { Feed, Sidebar, Widget } from '../components'
 
 export default function Home() {
   const router = useRouter()
@@ -17,24 +18,19 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 transition duration-200">
+    <>
       <Head>
         <title>Jovan Social</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-    { session && <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Jovan Social
-          </a>
-        </h1>
-
-
+    { session && <main className='flex'>
+        <Sidebar />
+        <Feed />
+        <Widget />
       </main>}
 
-    </div>
+    </>
   )
 }
 
