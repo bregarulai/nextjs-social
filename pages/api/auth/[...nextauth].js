@@ -1,5 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import clientPromise from "../../../lib/mongodb"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 
 
 export default NextAuth({
@@ -19,6 +21,7 @@ export default NextAuth({
     updateAge: 24 * 60 * 60, // 24 hours
   },
 
+
   // JSON Web tokens are only used for sessions if the `jwt: true` session
   // option is set - or by default if no database is specified.
   // https://next-auth.js.org/configuration/options#jwt
@@ -30,6 +33,7 @@ export default NextAuth({
     // encode: async ({ secret, token, maxAge }) => {},
     // decode: async ({ secret, token, maxAge }) => {},
   },
+  adapter: MongoDBAdapter(clientPromise),
 
   // You can define custom pages to override the built-in ones. These will be regular Next.js pages
   // so ensure that they are placed outside of the '/api' folder, e.g. signIn: '/auth/mycustom-signin'
