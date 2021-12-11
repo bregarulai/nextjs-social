@@ -12,6 +12,7 @@ const CreatePost = () => {
   const { data: session } = useSession();
   const [selectedFile, setSelectedFile] = useState(null);
   const [isloading, setIsloading] = useState(true);
+  const [showEmojiis, setShowEmojiis] = useState(false);
   const filePickerRef = useRef(null);
   return (
     <div
@@ -44,19 +45,31 @@ const CreatePost = () => {
           )}
         </div>
         {isloading && (
-          <div>
+          <div className='flex items-center justify-between pt-2.5'>
             <div className='flex items-center'>
               <div
                 className='icon'
                 onClick={() => filePickerRef.current.click()}
               >
-                <PhotographIcon className='text-[#1d9bf0] h-[22px]' />
+                <PhotographIcon className='text-indigo-500 h-[22px]' />
                 <input
                   type='file'
                   ref={filePickerRef}
                   hidden
                   //   onChange={addImageToPost}
                 />
+              </div>
+              <div className='icon rotate-90'>
+                <ChartBarIcon className='text-indigo-500 h-[22px]' />
+              </div>
+              <div className='icon'>
+                <EmojiHappyIcon
+                  className='text-indigo-500 h-[22px]'
+                  onClick={() => setShowEmojiis(!showEmojiis)}
+                />
+              </div>
+              <div className='icon'>
+                <CalendarIcon className='text-indigo-500 h-[22px]' />
               </div>
             </div>
           </div>
