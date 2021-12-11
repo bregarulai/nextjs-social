@@ -7,13 +7,25 @@ import {
   PhotographIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
 
 const CreatePost = () => {
   const { data: session } = useSession();
   const [selectedFile, setSelectedFile] = useState(null);
   const [isloading, setIsloading] = useState(true);
+  const [input, setInput] = useState('');
   const [showEmojiis, setShowEmojiis] = useState(false);
   const filePickerRef = useRef(null);
+
+  const addEmoji = (e) => {
+    let sym = e.unified.split('-');
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push('0x' + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setInput(input + emoji);
+  };
+
   return (
     <div
       className={`border-b border-gray-700 p-3 flex space-x-3 overflow-y-scroll scrollbar-hide`}
@@ -27,6 +39,8 @@ const CreatePost = () => {
       <div className='divide-y divide-gray-700 w-full'>
         <div>
           <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             className='bg-transparent outline-none w-full text-[#d9d9d9] text-lg placeholder-gray-500 tracking-wide min-h-[50px]'
             placeholder="What's happening?"
             rows='2'
@@ -71,6 +85,19 @@ const CreatePost = () => {
               <div className='icon'>
                 <CalendarIcon className='text-indigo-500 h-[22px]' />
               </div>
+              {showEmojiis && (
+                <Picker
+                  onSelect={addEmoji}
+                  style={{
+                    position: 'absolute',
+                    marginTop: '465px',
+                    marginLeft: -40,
+                    maxWidth: '320px',
+                    borderRadius: '20px',
+                  }}
+                  theme='dark'
+                />
+              )}
             </div>
           </div>
         )}
