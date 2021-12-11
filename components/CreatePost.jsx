@@ -9,6 +9,16 @@ import {
 } from '@heroicons/react/outline';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from '@firebase/firestore';
+import { getDownloadURL, ref, uploadString } from '@firebase/storage';
+
+import { db, storage } from '../firebase';
 
 const CreatePost = () => {
   const { data: session } = useSession();
@@ -41,8 +51,32 @@ const CreatePost = () => {
     if (isloading) return;
     setIsloading(true);
 
-    // const res = await axios.post('/api/post', selectedFile);
-    // console.log('RES: ', res);
+    const docRef = await addDoc(collection(db, 'posts'), {
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
+      text: input,
+      timestamp: serverTimestamp(),
+    });
+
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    if (selectedFile) {
+      try {
+        await uploadString(imageRef, selectedFile, 'data_url').then(
+          async () => {
+            const downloadURL = await getDownloadURL(imageRef);
+            const res = await updateDoc(doc(db, 'posts', docRef.id), {
+              image: downloadURL,
+            });
+            console.log('RES: ', res);
+          }
+        );
+      } catch (error) {
+        console.log('ERROR: ', error);
+      }
+    }
 
     setIsloading(false);
     setInput('');

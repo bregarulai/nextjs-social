@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import clientPromise from '../../../lib/mongodb';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import { FirebaseAdapter } from '@next-auth/firebase-adapter';
+
+import { db } from '../../../firebase';
 
 export default NextAuth({
   providers: [
@@ -23,7 +24,7 @@ export default NextAuth({
     secret: process.env.SECRET,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  // adapter: MongoDBAdapter(clientPromise),
+  // adapter: FirebaseAdapter(db),
 
   pages: {
     // signIn: '/auth/signin',  // Displays signin buttons
@@ -34,10 +35,10 @@ export default NextAuth({
   },
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      user.createdAt = new Date();
-      return user;
-    },
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   user.createdAt = new Date();
+    //   return user;
+    // },
     // async redirect({ url, baseUrl }) { return baseUrl },
     async session({ session, token }) {
       session.user.tag = session.user.name
