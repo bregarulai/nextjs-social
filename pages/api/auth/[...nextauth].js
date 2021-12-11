@@ -1,31 +1,29 @@
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import clientPromise from "../../../lib/mongodb"
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
-
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import clientPromise from '../../../lib/mongodb';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 
 export default NextAuth({
   providers: [
     GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET
-  })
-
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
 
   secret: process.env.SECRET,
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
     updateAge: 24 * 60 * 60, // 24 hours
   },
 
   jwt: {
-      secret: process.env.SECRET,
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+    secret: process.env.SECRET,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  adapter: MongoDBAdapter(clientPromise),
+  // adapter: MongoDBAdapter(clientPromise),
 
   pages: {
     // signIn: '/auth/signin',  // Displays signin buttons
@@ -37,22 +35,27 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-        user.createdAt = new Date()
-        return user },
+      user.createdAt = new Date();
+      return user;
+    },
     // async redirect({ url, baseUrl }) { return baseUrl },
-    async session({ session, token}) { 
-        session.user.tag = session.user.name.split(' ').join('').toLocaleLowerCase();
-        session.user.uid = token.sub
-        
-        return session },
+    async session({ session, token }) {
+      session.user.tag = session.user.name
+        .split(' ')
+        .join('')
+        .toLocaleLowerCase();
+      session.user.uid = token.sub;
+
+      return session;
+    },
     // async jwt({ token, user, account, profile, isNewUser }) {return token }
   },
 
   events: {},
 
   theme: {
-    colorScheme: "light",
+    colorScheme: 'light',
   },
 
   debug: false,
-})
+});

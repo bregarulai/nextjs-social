@@ -37,6 +37,18 @@ const CreatePost = () => {
     setInput(input + emoji);
   };
 
+  const makePost = async () => {
+    if (isloading) return;
+    setIsloading(true);
+
+    // const res = await axios.post('/api/post', selectedFile);
+    // console.log('RES: ', res);
+
+    setIsloading(false);
+    setInput('');
+    setSelectedFile(null);
+    setShowEmojiis(false);
+  };
   return (
     <div
       className={`border-b border-gray-700 p-3 flex space-x-3 overflow-y-scroll scrollbar-hide ${
@@ -118,6 +130,7 @@ const CreatePost = () => {
             <button
               className='bg-indigo-400 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed'
               disabled={!input && !selectedFile}
+              onClick={makePost}
             >
               Make a post
             </button>
