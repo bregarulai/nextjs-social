@@ -13,10 +13,21 @@ import { Picker } from 'emoji-mart';
 const CreatePost = () => {
   const { data: session } = useSession();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [isloading, setIsloading] = useState(true);
+  const [isloading, setIsloading] = useState(false);
   const [input, setInput] = useState('');
   const [showEmojiis, setShowEmojiis] = useState(false);
   const filePickerRef = useRef(null);
+
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   const addEmoji = (e) => {
     let sym = e.unified.split('-');
@@ -28,7 +39,9 @@ const CreatePost = () => {
 
   return (
     <div
-      className={`border-b border-gray-700 p-3 flex space-x-3 overflow-y-scroll scrollbar-hide`}
+      className={`border-b border-gray-700 p-3 flex space-x-3 overflow-y-scroll scrollbar-hide ${
+        isloading && 'opacity-60'
+      }`}
     >
       <img
         className='h-11 w-11 rounded-full cursor-pointer'
@@ -47,18 +60,21 @@ const CreatePost = () => {
           />
           {selectedFile && (
             <div className='relative'>
-              <div className='absolute w-8 h-8 hover:bg-[#272c26] bg-opacity-75 rounded-full flex items-center justify-center top-1 left-1 cursor-pointer'>
+              <div
+                className='absolute w-8 h-8 hover:bg-[#272c26] bg-opacity-75 rounded-full flex items-center justify-center top-1 left-1 cursor-pointer'
+                onClick={() => setSelectedFile(null)}
+              >
                 <XIcon className='text-white h-5' />
               </div>
               <img
                 className='rounded-2xl max-h-80 object-contain'
-                src=''
+                src={selectedFile}
                 alt='post'
               />
             </div>
           )}
         </div>
-        {isloading && (
+        {!isloading && (
           <div className='flex items-center justify-between pt-2.5'>
             <div className='flex items-center'>
               <div
@@ -70,7 +86,7 @@ const CreatePost = () => {
                   type='file'
                   ref={filePickerRef}
                   hidden
-                  //   onChange={addImageToPost}
+                  onChange={addImageToPost}
                 />
               </div>
               <div className='icon rotate-90'>
@@ -99,6 +115,12 @@ const CreatePost = () => {
                 />
               )}
             </div>
+            <button
+              className='bg-indigo-400 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed'
+              disabled={!input && !selectedFile}
+            >
+              Make a post
+            </button>
           </div>
         )}
       </div>
