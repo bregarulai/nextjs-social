@@ -1,13 +1,24 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import React, { Fragment } from 'react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { modalState, postIdState } from '../atoms/modalAtom';
+import { db } from '../firebase';
 
 const Modal = () => {
   const [postId, setPostId] = useRecoilState(postIdState);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [post, setPost] = useState({});
+
+  useEffect(
+    () =>
+      onSnapshot(doc(db, 'posts', postId), (snapshot) =>
+        setPost(snapshot.data())
+      ),
+    [db]
+  );
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as='div' className='fixed z-50 inset-0 pt-8' onClose={setIsOpen}>
@@ -21,7 +32,7 @@ const Modal = () => {
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <Dialog.Overlay className='fixed inset-0 bg-[#5b7083] bg-opacity-40 transition-opacity' />
+            <Dialog.Overlay className='fixed inset-0 bg-[#5b7083] bg-opacity-30 transition-opacity' />
           </Transition.Child>
           <Transition.Child
             as={Fragment}
@@ -32,10 +43,21 @@ const Modal = () => {
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <div>
+            <div className='align-bottom inline-block bg-black text-left rounded-t-2xl shadow-xl overflow-hidden transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full'>
+              <div className='flex items-center px-1.5 py-2 border-b border-gray-700'>
+                <div
+                  className='w-9 h-9 hoverAnimation flex justify-center items-center xl:px-0'
+                  onClick={() => setIsOpen(false)}
+                >
+                  <XIcon className='h-[22px] text-white' />
+                </div>
+              </div>
               <div>
                 <div>
-                  <XIcon className='h-[22px] text-white' />
+                  <div>
+                    <span className='w-0.5 z-[-1] h-full absolute top-11 left-5 bg-gray-600' />
+                    <img src={post?.userImg} alt={post?.text} />
+                  </div>
                 </div>
               </div>
             </div>
