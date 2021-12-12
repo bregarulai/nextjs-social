@@ -1,13 +1,16 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { useSession } from 'next-auth/react';
 import React, { Fragment, useState, useEffect } from 'react';
+import Moment from 'react-moment';
 import { useRecoilState } from 'recoil';
 
 import { modalState, postIdState } from '../atoms/modalAtom';
 import { db } from '../firebase';
 
 const Modal = () => {
+  const { data: session } = useSession();
   const [postId, setPostId] = useRecoilState(postIdState);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState({});
@@ -60,6 +63,30 @@ const Modal = () => {
                       className='rounded-full w-11 h-11'
                       src={post?.userImg}
                       alt={post?.text}
+                    />
+                    <div>
+                      <div className='group inline'>
+                        <h4 className='text-[#d9d9d9] text-[15px] inline-block sm:text-base'>
+                          {post?.username}
+                        </h4>
+                        <span className='text-sm ml-1.5 sm:text-[15px]'>
+                          @{post?.tag}{' '}
+                        </span>
+                      </div>{' '}
+                      .{' '}
+                      <span className='text-sm sm:text-[15px] hover:underline'>
+                        <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+                      </span>
+                      <p className='sm:text-base text-[15px] text-[#d9d9d9]'>
+                        {post?.text}
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex space-x-3 mt-7 w-full'>
+                    <img
+                      src={session.user.image}
+                      alt='user'
+                      className='rounded-full w-11 h-11'
                     />
                   </div>
                 </div>
