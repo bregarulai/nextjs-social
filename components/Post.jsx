@@ -24,10 +24,14 @@ import {
 import { useRouter } from 'next/router';
 
 import { db } from '../firebase';
+import { modalState, postIdState } from '../atoms/modalAtom';
+import { useRecoilState } from 'recoil';
 
 const Post = ({ post, postPage, id }) => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [postId, setPostId] = useRecoilState(postIdState);
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [comments, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
@@ -116,7 +120,14 @@ const Post = ({ post, postPage, id }) => {
         <div
           className={`flex justify-between w-10/12 ${postPage && 'mx-auto'}`}
         >
-          <div className='group flex items-center space-x-1'>
+          <div
+            className='group flex items-center space-x-1'
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(true);
+              setPostId(id);
+            }}
+          >
             <div className='icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10'>
               <ChatIcon className='group-hover:text-[#1d9bf0] h-5' />
             </div>
