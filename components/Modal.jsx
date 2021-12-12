@@ -1,3 +1,4 @@
+import { async } from '@firebase/util';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   CalendarIcon,
@@ -6,8 +7,15 @@ import {
   PhotographIcon,
   XIcon,
 } from '@heroicons/react/outline';
-import { doc, onSnapshot } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { Fragment, useState, useEffect } from 'react';
 import Moment from 'react-moment';
 import { useRecoilState } from 'recoil';
@@ -17,6 +25,7 @@ import { db } from '../firebase';
 
 const Modal = () => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [postId, setPostId] = useRecoilState(postIdState);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState({});
@@ -29,6 +38,24 @@ const Modal = () => {
       ),
     [db]
   );
+
+  const sendComment = async (e) => {
+    e.preventDefault();
+
+    await addDoc(collection(db, 'posts', postId, 'comments'), {
+      comment,
+      username: session.user.name,
+      tag: session.user.tag,
+      userImg: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+
+    setIsOpen(false);
+    setComment('');
+
+    router.push(`/${postId}`);
+  };
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog as='div' className='fixed z-50 inset-0 pt-8' onClose={setIsOpen}>
@@ -118,7 +145,12 @@ const Modal = () => {
                             <CalendarIcon className='h-[22px] text-[#1d9bf0]' />
                           </di>
                         </div>
-                        <button className='text-white bg-indigo-400 rounded-full px-4 py-1.5 shadow-md font-bold hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150'>
+                        <button
+                          type='submit'
+                          disabled={!comment.trim()}
+                          className='text-white bg-indigo-400 rounded-full px-4 py-1.5 shadow-md font-bold hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150'
+                          onClick={sendComment}
+                        >
                           Reply
                         </button>
                       </div>
