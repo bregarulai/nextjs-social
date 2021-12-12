@@ -10,10 +10,16 @@ import {
   TrashIcon,
 } from '@heroicons/react/outline';
 import { useSession } from 'next-auth/react';
+import {
+  HeartIcon as HeartIconFilled,
+  ChatIcon as ChatIconFilled,
+} from '@heroicons/react/solid';
 
 const Post = ({ post, postPage }) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
 
   return (
     <div className='flex p-3 cursor-pointer border-b border-gray-700'>
@@ -84,18 +90,52 @@ const Post = ({ post, postPage }) => {
             )}
           </div>
           {session.user.uid === post?.id ? (
-            <div className='group space-x-1 flex items-center'>
+            <div
+              className='group space-x-1 flex items-center'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <div className='group-hover:bg-red-600/10 icon'>
                 <TrashIcon className='group-hover:text-red-600 h-5' />
               </div>
             </div>
           ) : (
-            <div>
-              <div>
+            <div className='group space-x-1 flex items-center'>
+              <div className='group-hover:bg-green-500/10 icon'>
                 <SwitchHorizontalIcon className='group-hover:text-green-500 h-5' />
               </div>
             </div>
           )}
+          <div
+            className='group space-x-1 flex items-center'
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <div className='group-hover:bg-pink-600/10 icon'>
+              {liked ? (
+                <HeartIconFilled className='h-5 text-pink-600' />
+              ) : (
+                <HeartIcon className='h-5 group-hover:text-pink-600' />
+              )}
+            </div>
+            {likes.length > 0 && (
+              <span
+                className={`group-hover:text-pink-600 text-sm ${
+                  likes && 'text-pink-600'
+                }`}
+              >
+                {likes.length}
+              </span>
+            )}
+          </div>
+          <div className='group icon'>
+            <ShareIcon className='h-5 group-hover:text-[#1d9bf0]' />
+          </div>
+          <div className='group icon'>
+            <ChartBarIcon className='h-5 group-hover:text-[#1d9bf0]' />
+          </div>
         </div>
       </div>
     </div>
