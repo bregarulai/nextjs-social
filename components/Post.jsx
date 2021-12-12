@@ -14,12 +14,24 @@ import {
   HeartIcon as HeartIconFilled,
   ChatIcon as ChatIconFilled,
 } from '@heroicons/react/solid';
+import { async } from '@firebase/util';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 
 const Post = ({ post, postPage }) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
+
+  const likeAPost = async () => {
+    if (liked) {
+      await deleteDoc(doc('posts', id, 'likes', session.user.uid));
+    } else {
+      await setDoc(doc('posts', id, 'likes', session.user.uid), {
+        username: session.user.name,
+      });
+    }
+  };
 
   return (
     <div className='flex p-3 cursor-pointer border-b border-gray-700'>
@@ -111,6 +123,7 @@ const Post = ({ post, postPage }) => {
             className='group space-x-1 flex items-center'
             onClick={(e) => {
               e.stopPropagation();
+              likeAPost();
             }}
           >
             <div className='group-hover:bg-pink-600/10 icon'>
