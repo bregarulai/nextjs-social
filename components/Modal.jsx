@@ -14,6 +14,7 @@ const Modal = () => {
   const [postId, setPostId] = useRecoilState(postIdState);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState({});
+  const [comment, setComment] = useState('');
 
   useEffect(
     () =>
@@ -88,6 +89,15 @@ const Modal = () => {
                       alt='user'
                       className='rounded-full w-11 h-11'
                     />
+                    <div className='mt-2 flex-grow'>
+                      <textarea
+                        className='outline-none bg-transparent text-lg text-[#d9d9d9] placeholder-gray-500 w-full tracking-wide min-h-[80px]'
+                        rows='2'
+                        placeholder='Reply'
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
