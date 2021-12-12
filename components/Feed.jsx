@@ -50,7 +50,11 @@ const Feed = () => {
       <CreatePost />
       <div className='pb-72'>
         {posts.map((post) => (
-          <Post key={post.data().timestamp} post={post.data()} />
+          <Post
+            key={post.data().timestamp}
+            id={post.data().id}
+            post={post.data()}
+          />
         ))}
       </div>
     </div>

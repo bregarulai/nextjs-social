@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Moment from 'react-moment';
 import {
   ChartBarIcon,
@@ -15,19 +15,44 @@ import {
   ChatIcon as ChatIconFilled,
 } from '@heroicons/react/solid';
 import { async } from '@firebase/util';
-import { deleteDoc, doc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from 'firebase/firestore';
+import { db } from '../firebase';
+import { useRouter } from 'next/router';
 
-const Post = ({ post, postPage }) => {
+const Post = ({ post, postPage, id }) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const [comments, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState([]);
 
+  useEffect(
+    () =>
+      onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [id, db]
+  );
+
+  useEffect(
+    () =>
+      setLiked(
+        likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+      ),
+    [likes]
+  );
+
   const likeAPost = async () => {
     if (liked) {
-      await deleteDoc(doc('posts', id, 'likes', session.user.uid));
+      await deleteDoc(doc(db, 'posts', id, 'likes', session.user.uid));
     } else {
-      await setDoc(doc('posts', id, 'likes', session.user.uid), {
+      await setDoc(doc(db, 'posts', id, 'likes', session.user.uid), {
         username: session.user.name,
       });
     }
@@ -106,6 +131,8 @@ const Post = ({ post, postPage }) => {
               className='group space-x-1 flex items-center'
               onClick={(e) => {
                 e.stopPropagation();
+                deleteDoc(doc(db, 'post', id));
+                router.push('/');
               }}
             >
               <div className='group-hover:bg-red-600/10 icon'>
