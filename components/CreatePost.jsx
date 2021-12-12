@@ -162,7 +162,7 @@ const CreatePost = () => {
               )}
             </div>
             <button
-              className='bg-indigo-400 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed'
+              className='bg-indigo-400 text-white rounded-full px-4 py-1.5 font-bold shadow-md hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150'
               disabled={!input && !selectedFile}
               onClick={makePost}
             >

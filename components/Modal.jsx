@@ -118,6 +118,9 @@ const Modal = () => {
                             <CalendarIcon className='h-[22px] text-[#1d9bf0]' />
                           </di>
                         </div>
+                        <button className='text-white bg-indigo-400 rounded-full px-4 py-1.5 shadow-md font-bold hover:bg-indigo-500 disabled:hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150'>
+                          Reply
+                        </button>
                       </div>
                     </div>
                   </div>
