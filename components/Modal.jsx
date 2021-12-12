@@ -43,7 +43,7 @@ const Modal = () => {
             leaveFrom='opacity-100 translate-y-0 sm:scale-100'
             leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
           >
-            <div className='align-bottom inline-block bg-black text-left rounded-t-2xl shadow-xl overflow-hidden transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full'>
+            <div className='inline-block align-bottom bg-slate-900 rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl sm:w-full'>
               <div className='flex items-center px-1.5 py-2 border-b border-gray-700'>
                 <div
                   className='w-9 h-9 hoverAnimation flex justify-center items-center xl:px-0'
