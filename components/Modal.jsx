@@ -1,5 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import {
+  CalendarIcon,
+  ChartBarIcon,
+  EmojiHappyIcon,
+  PhotographIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import React, { Fragment, useState, useEffect } from 'react';
@@ -97,6 +103,22 @@ const Modal = () => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                       />
+                      <div className='flex justify-between items-center pt-2.5'>
+                        <div className='flex items-center'>
+                          <di className='icon'>
+                            <PhotographIcon className='h-[22px] text-[#1d9bf0]' />
+                          </di>
+                          <di className='icon rotate-90'>
+                            <ChartBarIcon className='h-[22px] text-[#1d9bf0]' />
+                          </di>
+                          <di className='icon'>
+                            <EmojiHappyIcon className='h-[22px] text-[#1d9bf0]' />
+                          </di>
+                          <di className='icon'>
+                            <CalendarIcon className='h-[22px] text-[#1d9bf0]' />
+                          </di>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
