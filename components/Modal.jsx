@@ -52,11 +52,15 @@ const Modal = () => {
                   <XIcon className='h-[22px] text-white' />
                 </div>
               </div>
-              <div>
-                <div>
-                  <div>
+              <div className='flex px-4 pt-5 pb-2.5 sm:px-6'>
+                <div className='w-full'>
+                  <div className='flex gap-x-3 relative text-[#6e767d]'>
                     <span className='w-0.5 z-[-1] h-full absolute top-11 left-5 bg-gray-600' />
-                    <img src={post?.userImg} alt={post?.text} />
+                    <img
+                      className='rounded-full w-11 h-11'
+                      src={post?.userImg}
+                      alt={post?.text}
+                    />
                   </div>
                 </div>
               </div>
