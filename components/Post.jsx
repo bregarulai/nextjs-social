@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Moment from 'react-moment';
 import {
   ChartBarIcon,
@@ -9,9 +9,12 @@ import {
   SwitchHorizontalIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
+import { useSession } from 'next-auth/react';
 
 const Post = ({ post, postPage }) => {
-  console.log('POST: ', post);
+  const { data: session } = useSession();
+  const [comments, setComments] = useState([]);
+
   return (
     <div className='flex p-3 cursor-pointer border-b border-gray-700'>
       {!postPage && (
@@ -67,12 +70,32 @@ const Post = ({ post, postPage }) => {
           alt={post?.text}
           className='rounded-2xl max-h-[700px] object-cover mr-2'
         />
-        <div>
+        <div
+          className={`flex justify-between w-10/12 ${postPage && 'mx-auto'}`}
+        >
           <div className='group flex items-center space-x-1'>
-            <div>
+            <div className='icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10'>
               <ChatIcon className='group-hover:text-[#1d9bf0] h-5' />
             </div>
+            {comments.length > 0 && (
+              <span className='text-sm group-hover:text-[#1d9bf0]'>
+                {comments.length}
+              </span>
+            )}
           </div>
+          {session.user.uid === post?.id ? (
+            <div className='group space-x-1 flex items-center'>
+              <div className='group-hover:bg-red-600/10 icon'>
+                <TrashIcon className='group-hover:text-red-600 h-5' />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div>
+                <SwitchHorizontalIcon className='group-hover:text-green-500 h-5' />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
