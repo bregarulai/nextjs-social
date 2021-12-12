@@ -14,7 +14,6 @@ import {
   HeartIcon as HeartIconFilled,
   ChatIcon as ChatIconFilled,
 } from '@heroicons/react/solid';
-import { async } from '@firebase/util';
 import {
   collection,
   deleteDoc,
@@ -22,8 +21,9 @@ import {
   onSnapshot,
   setDoc,
 } from 'firebase/firestore';
-import { db } from '../firebase';
 import { useRouter } from 'next/router';
+
+import { db } from '../firebase';
 
 const Post = ({ post, postPage, id }) => {
   const { data: session } = useSession();
