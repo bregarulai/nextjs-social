@@ -7,6 +7,7 @@ import {
   PhotographIcon,
   XIcon,
 } from '@heroicons/react/outline';
+import { Picker } from 'emoji-mart';
 import {
   addDoc,
   collection,
@@ -30,6 +31,7 @@ const Modal = () => {
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState({});
   const [comment, setComment] = useState('');
+  const [showEmojis, setShowEmojis] = useState(false);
 
   useEffect(
     () =>
@@ -52,8 +54,17 @@ const Modal = () => {
 
     setIsOpen(false);
     setComment('');
+    setShowEmojis(false);
 
     router.push(`/${postId}`);
+  };
+
+  const addEmoji = (e) => {
+    let sym = e.unified.split('-');
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push('0x' + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setComment(comment + emoji);
   };
 
   return (
@@ -139,7 +150,10 @@ const Modal = () => {
                             <ChartBarIcon className='h-[22px] text-[#1d9bf0]' />
                           </di>
                           <di className='icon'>
-                            <EmojiHappyIcon className='h-[22px] text-[#1d9bf0]' />
+                            <EmojiHappyIcon
+                              className='h-[22px] text-[#1d9bf0]'
+                              onClick={() => setShowEmojis(!showEmojis)}
+                            />
                           </di>
                           <di className='icon'>
                             <CalendarIcon className='h-[22px] text-[#1d9bf0]' />
@@ -160,6 +174,19 @@ const Modal = () => {
               </div>
             </div>
           </Transition.Child>
+          {showEmojis && (
+            <Picker
+              onSelect={addEmoji}
+              style={{
+                position: 'absolute',
+                marginTop: '330px',
+                marginLeft: '-575px',
+                maxWidth: '320px',
+                borderRadius: '20px',
+              }}
+              theme='dark'
+            />
+          )}
         </div>
       </Dialog>
     </Transition.Root>
