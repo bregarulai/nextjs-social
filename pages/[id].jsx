@@ -59,7 +59,10 @@ const PostPage = () => {
         <Sidebar />
         <div className='flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[5rem] xl:ml-[20rem]'>
           <div className='flex items-center py-2 px-1.5 border-gray-700 border-b text-[#d9d9d9] text-xl font-semibold gap-x-4 sticky top-0 z-50 bg-slate-900'>
-            <div>
+            <div
+              className='h-9 w-9 hoverAnimation flex items-center justify-center xl:px-0'
+              onClick={() => router.push('/')}
+            >
               <ArrowLeftIcon className='text-white h-5' />
             </div>
             Post
