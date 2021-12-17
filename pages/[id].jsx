@@ -1,16 +1,22 @@
 import { ArrowLeftIcon } from '@heroicons/react/outline';
-import { doc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { postIdState } from '../atoms/modalAtom';
-import { Post, Sidebar } from '../components';
+import { Comment, Post, Sidebar } from '../components';
 import { db } from '../firebase';
 
 const PostPage = () => {
   const [comments, setComments] = useState([]);
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState({});
   const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = router.query;
@@ -21,6 +27,18 @@ const PostPage = () => {
         setPost(snapshot.data());
       }),
     [db]
+  );
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, 'posts', id, 'comments'),
+          orderBy('timestamp', 'desc')
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db, id]
   );
 
   useEffect(() => {
@@ -47,6 +65,13 @@ const PostPage = () => {
             Post
           </div>
           <Post id={id} post={post} postPage />
+          {comments.length > 0 && (
+            <div className='pb-72'>
+              {comments.map((comment) => (
+                <Comment key={comment.id} comment={comment.data()} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>
