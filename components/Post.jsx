@@ -19,6 +19,8 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
+  orderBy,
+  query,
   setDoc,
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';
@@ -42,6 +44,18 @@ const Post = ({ post, postPage, id }) => {
         setLikes(snapshot.docs)
       ),
     [id, db]
+  );
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, 'posts', id, 'comments'),
+          orderBy('timestamp', 'desc')
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db, id]
   );
 
   useEffect(
