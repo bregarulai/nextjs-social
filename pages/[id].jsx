@@ -1,10 +1,11 @@
+import { ArrowLeftIcon } from '@heroicons/react/outline';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { postIdState } from '../atoms/modalAtom';
-import { Sidebar } from '../components';
+import { Post, Sidebar } from '../components';
 import { db } from '../firebase';
 
 const PostPage = () => {
@@ -38,6 +39,15 @@ const PostPage = () => {
       </Head>
       <main className='min-h-screen bg-slate-900 flex max-w-[1500px] mx-auto'>
         <Sidebar />
+        <div className='flex-grow border-l border-r border-gray-700 max-w-2xl sm:ml-[5rem] xl:ml-[20rem]'>
+          <div className='flex items-center py-2 px-1.5 border-gray-700 border-b text-[#d9d9d9] text-xl font-semibold gap-x-4 sticky top-0 z-50 bg-slate-900'>
+            <div>
+              <ArrowLeftIcon className='text-white h-5' />
+            </div>
+            Post
+          </div>
+          <Post id={id} post={post} postPage />
+        </div>
       </main>
     </div>
   );
