@@ -14,6 +14,9 @@ const Widget = ({ trending }) => {
           />
         </div>
       </div>
+      <div className='space-y-3 text-[#d9d9d9] bg-[#15181c] rounded-t-xl pt-2 w-11/12 xl:w-9/12'>
+        <h4 className='text-xl font-bold px-4'>What's happening</h4>
+      </div>
     </div>
   );
 };
