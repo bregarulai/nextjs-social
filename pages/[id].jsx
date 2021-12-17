@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { postIdState } from '../atoms/modalAtom';
+import { Sidebar } from '../components';
 import { db } from '../firebase';
 
 const PostPage = () => {
@@ -35,7 +36,9 @@ const PostPage = () => {
         </title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className='min-h-screen bg-slate-900 flex max-w-[1500px] mx-auto'></main>
+      <main className='min-h-screen bg-slate-900 flex max-w-[1500px] mx-auto'>
+        <Sidebar />
+      </main>
     </div>
   );
 };
