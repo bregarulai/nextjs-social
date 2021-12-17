@@ -77,7 +77,10 @@ const Post = ({ post, postPage, id }) => {
   };
 
   return (
-    <div className='flex p-3 cursor-pointer border-b border-gray-700'>
+    <div
+      className='flex p-3 cursor-pointer border-b border-gray-700'
+      onClick={() => router.push(`/${id}`)}
+    >
       {!postPage && (
         <img
           src={post?.userImg}
