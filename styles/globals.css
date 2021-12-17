@@ -19,6 +19,6 @@
     }
 
     .tag {
-        @apply text-[#1d9bf0] font-normal hover:underline cursor-pointer;
+        @apply text-indigo-500 font-normal hover:underline cursor-pointer;
     }
 }
