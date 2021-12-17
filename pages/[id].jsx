@@ -6,11 +6,10 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import { postIdState } from '../atoms/modalAtom';
 import { Comment, Post, Sidebar } from '../components';
 import { db } from '../firebase';
 
@@ -82,3 +81,12 @@ const PostPage = () => {
 };
 
 export default PostPage;
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props: {
+      session,
+    },
+  };
+}

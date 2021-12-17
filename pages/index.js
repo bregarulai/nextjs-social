@@ -7,7 +7,7 @@ import { Feed, Sidebar, Widget, Modal } from '../components';
 import { modalState } from '../atoms/modalAtom';
 import { useRecoilState } from 'recoil';
 
-export default function Home() {
+export default function Home({ trending }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const { data: session, status } = useSession();
@@ -31,7 +31,7 @@ export default function Home() {
         <main className='flex'>
           <Sidebar />
           <Feed />
-          <Widget />
+          <Widget trending={trending} />
           {isOpen && <Modal />}
         </main>
       )}
@@ -40,10 +40,14 @@ export default function Home() {
 }
 
 export async function getServerSideProps(context) {
+  const trending = await fetch('https://jsonkeeper.com/b/XOKF').then((data) =>
+    data.json()
+  );
   const session = await getSession(context);
   return {
     props: {
       session,
+      trending,
     },
   };
 }
