@@ -1,6 +1,8 @@
 import { SearchIcon } from '@heroicons/react/outline';
 import React from 'react';
 
+import { Trending } from '../components';
+
 const Widget = ({ trending }) => {
   return (
     <div className=' lg:w-[20rem] hidden lg:inline ml-8  py-1 space-y-5'>
@@ -16,6 +18,9 @@ const Widget = ({ trending }) => {
       </div>
       <div className='space-y-3 text-[#d9d9d9] bg-[#15181c] rounded-t-xl pt-2 w-11/12 xl:w-9/12'>
         <h4 className='text-xl font-bold px-4'>What's happening</h4>
+        {trending.map((item, index) => (
+          <Trending trending={item} key={index} />
+        ))}
       </div>
     </div>
   );
