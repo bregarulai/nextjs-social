@@ -159,7 +159,7 @@ const Post = ({ post, postPage, id }) => {
               className='group space-x-1 flex items-center'
               onClick={(e) => {
                 e.stopPropagation();
-                deleteDoc(doc(db, 'post', id));
+                deleteDoc(doc(db, 'posts', id));
                 router.push('/');
               }}
             >
