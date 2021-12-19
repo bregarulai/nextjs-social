@@ -40,9 +40,15 @@ const Widget = ({ trending, follow }) => {
               objectFit='cover'
               className='rounded-full'
             />
-            <div>
-              <h4>{item.username}</h4>
+            <div className='group ml-4 leading-5'>
+              <h4 className='group-hover:underline font-bold'>
+                {item.username}
+              </h4>
+              <h5 className='text-gray-500 text-[15px]'>{item.tag}</h5>
             </div>
+            <button className='ml-auto bg-white text-black rounded-full font-bold text-sm px-3.5 py-1.5'>
+              Follow
+            </button>
           </div>
         ))}
         <button className='hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center justify-center w-full text-indigo-400 font-light'>
