@@ -10,15 +10,18 @@ import { getSession, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import { Comment, Post, Sidebar } from '../components';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../atoms/modalAtom';
+import { Comment, Modal, Post, Sidebar, Widget } from '../components';
 import { db } from '../firebase';
 
-const PostPage = () => {
+const PostPage = ({ trending, follow }) => {
   const [comments, setComments] = useState([]);
   const [post, setPost] = useState({});
   const { data: session, status } = useSession();
   const router = useRouter();
   const { id } = router.query;
+  const [isOpen] = useRecoilState(modalState);
 
   useEffect(
     () =>
@@ -75,6 +78,8 @@ const PostPage = () => {
             </div>
           )}
         </div>
+        <Widget trending={trending} follow={follow} />
+        {isOpen && <Modal />}
       </main>
     </div>
   );
@@ -83,10 +88,18 @@ const PostPage = () => {
 export default PostPage;
 
 export async function getServerSideProps(context) {
+  const trending = await fetch('https://jsonkeeper.com/b/XOKF').then((data) =>
+    data.json()
+  );
+  const follow = await fetch('https://jsonkeeper.com/b/3R00').then((data) =>
+    data.json()
+  );
   const session = await getSession(context);
   return {
     props: {
       session,
+      trending,
+      follow,
     },
   };
 }

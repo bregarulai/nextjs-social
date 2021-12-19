@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil';
 
 export default function Home({ trending, follow }) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [isOpen] = useRecoilState(modalState);
   const { data: session, status } = useSession();
   console.log('session: ', useSession());
 

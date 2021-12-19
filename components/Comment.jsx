@@ -29,7 +29,7 @@ const Comment = ({ comment }) => {
             </div>{' '}
             .{' '}
             <span className='text-sm sm:text-[15px] hover:underline'>
-              <Moment fromNow>{comment.timestamp.toDate()}</Moment>
+              <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>
             <p className='mt-0.5 text-[#d9d9d9] max-w-lg overflow-scroll text-[15px] sm:text-base scrollbar-hide'>
               {comment.comment}
