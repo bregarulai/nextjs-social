@@ -1,9 +1,10 @@
 import { SearchIcon } from '@heroicons/react/outline';
+import Image from 'next/image';
 import React from 'react';
 
 import { Trending } from '../components';
 
-const Widget = ({ trending }) => {
+const Widget = ({ trending, follow }) => {
   return (
     <div className=' lg:w-[20rem] hidden lg:inline ml-8  py-1 space-y-5'>
       <div className='sticky top-0 py-1.5 bg-slate-900 z-50 w-11/12 xl:w-9/12'>
@@ -21,6 +22,32 @@ const Widget = ({ trending }) => {
         {trending.map((item, index) => (
           <Trending trending={item} key={index} />
         ))}
+        <button className='hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center justify-center w-full text-indigo-400 font-light'>
+          show more
+        </button>
+      </div>
+      <div className='space-y-3 text-[#d9d9d9] bg-[#15181c] rounded-t-xl pt-2 w-11/12 xl:w-9/12'>
+        <h4 className='text-xl font-bold px-4'>Who to follow</h4>
+        {follow.map((item, index) => (
+          <div
+            key={index}
+            className='hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center'
+          >
+            <Image
+              width={50}
+              height={50}
+              src={item.userImg}
+              objectFit='cover'
+              className='rounded-full'
+            />
+            <div>
+              <h4>{item.username}</h4>
+            </div>
+          </div>
+        ))}
+        <button className='hover:bg-white hover:bg-opacity-[0.03] px-4 py-2 cursor-pointer transition duration-200 ease-out flex items-center justify-center w-full text-indigo-400 font-light'>
+          show more
+        </button>
       </div>
     </div>
   );
