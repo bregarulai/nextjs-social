@@ -14,8 +14,7 @@ const Login = () => {
         className='flex items-center space-x-2 h-10 px-5 transition-colors duration-150 border rounded-lg focus:shadow-outline hover:bg-gray-50 hover:text-gray-800'
         onClick={() =>
           signIn('google', {
-            callbackUrl:
-              'https://nextjs-social-iyjwgd570-bregarulai.vercel.app',
+            callbackUrl: 'https://nextjs-social-delta.vercel.app',
           })
         }
       >
