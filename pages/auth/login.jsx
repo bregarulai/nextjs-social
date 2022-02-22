@@ -13,7 +13,10 @@ const Login = () => {
       <button
         className='flex items-center space-x-2 h-10 px-5 transition-colors duration-150 border rounded-lg focus:shadow-outline hover:bg-gray-50 hover:text-gray-800'
         onClick={() =>
-          signIn('google', { callbackUrl: 'http://localhost:3000' })
+          signIn('google', {
+            callbackUrl:
+              'https://nextjs-social-iyjwgd570-bregarulai.vercel.app',
+          })
         }
       >
         <img src='/google.svg' alt='google Logo' className='h-4 ml-2' />
